@@ -24,7 +24,7 @@ dependencies {
 
 }
 
-//mainClassName = 'com.example.demo.MainVerticle'
+// 内置变量，入口类，非MainVerticle
 mainClassName = 'io.vertx.core.Launcher'
 def mainVerticle = 'com.example.demo.MainVerticle'
 shadowJar {
