@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
+}
+
+ext {
+    vertxVersion = '3.5.0'
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile "io.vertx:vertx-core:$vertxVersion"
+    compile "io.vertx:vertx-unit:$vertxVersion"
+    compile "junit:junit:4.12"
+
+}
+
+//mainClassName = 'com.example.demo.MainVerticle'
+mainClassName = 'io.vertx.core.Launcher'
+def mainVerticle = 'com.example.demo.MainVerticle'
+shadowJar {
+    classifier = 'fat'
+    manifest {
+        attributes 'Main-Verticle': mainVerticle
+    }
+    mergeServiceFiles {
+        include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
+}
+
+run {
+    args = ['run', mainVerticle, "--launcher-class=io.vertx.core.Launcher"]
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.0'
+}
